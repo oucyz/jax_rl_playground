@@ -1,0 +1,82 @@
+[project]
+name = "uv-template"
+version = "0.1.0"
+description = "Template repository with python uv"
+authors = [{name = "oucyz", email = ""}]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.10.5",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "pytest>=8.3.4",
+    "ruff>=0.9.1",
+    "coverage>=7.6.10",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/project_example", "src"]
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["build"]
+follow_imports = "skip"
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[tool.ruff]
+line-length = 99
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestype errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C",  # flake8-comprehensions
+]
+ignore = [
+    "B028",  # No explicit `stacklevel` keyword argument found 
+    "E731",  # Do not assign a lambda expression, use a `def`
+    "E741",  # Ambiguous variable name (for lambda expression)
+    "E501",  # Line too long
+    "B008",  # Do not perform function calls in argument defaults
+    "C901",  # too complex
+    "W191",  # indepentation contains tabs
+    "B904",  # ignore `raise ... from ...` errors
+]
+unfixable = [
+    "F401",   # unused import
+    "F841",   # unused variable
+    "ERA001", # commented out code
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",  # unused import
+]
+"header.py" = [
+    "F401",  # unused import
+]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.coverage]
+source = ["src"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
