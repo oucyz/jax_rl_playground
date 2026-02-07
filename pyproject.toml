@@ -1,11 +1,13 @@
 [project]
-name = "uv-template"
+name = "jax_rl_playground"
 version = "0.1.0"
-description = "Template repository with python uv"
+description = "jax"
 authors = [{name = "oucyz", email = ""}]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "flax>=0.12.2",
+    "jax>=0.8.2",
     "pydantic>=2.10.5",
 ]
 
@@ -18,7 +20,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/project_example", "src"]
+packages = ["src/jax_playground", "src"]
 
 [tool.mypy]
 ignore_missing_imports = true
