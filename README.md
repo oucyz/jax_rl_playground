@@ -1,49 +1,71 @@
-# uv-template
+# jax_rl_playground
 
-<div align="center">
+JAX を使って強化学習を学ぶためのサンプル集です。  
+現在は **オフラインRL（Conservative Q-Learning 風）** の最小実装を収録しています。
 
-[![Versions](https://img.shields.io/badge/python-3.12%20|%203.13%20-green.svg)](https://github.com/oucyz/uv-template)
+## このサンプルで学べること
 
-[![Action status](https://github.com/oucyz/uv-template/actions/workflows/CI.yml/badge.svg)](https://github.com/oucyz/uv-template/actions/workflows/CI.yml)
+- オフラインRLの基本フロー
+- 固定データセットのみで Q 関数を学習する手順
+- Bellman 損失に保守的正則化（CQL風）を足す考え方
+- JAX + Optax での小規模学習ループ実装
 
-</div>
+## 実装ファイル
 
-これは uv を用いた Python プロジェクトのテンプレートリポジトリです.
+- `/Users/oucyz/repos/jax_rl_playground/src/jax_playground/offline_rl.py`
+- `/Users/oucyz/repos/jax_rl_playground/test/test_offline_rl.py`
 
-
-## 開発環境の構築
-
-### 仮想環境の有効化と無効化
+## クイックスタート
 
 ```zsh
-# プロジェクトの root ディレクトリで以下を実行
+# 依存関係を同期
 uv sync
-# 仮想環境の有効化
-$ . .venv/bin/activate
 
-# 仮想環境の無効化
-$ deactivate
+# 仮想環境を有効化（任意）
+. .venv/bin/activate
 ```
 
-### Formatter, Linter の適用
+## 実行例（Python REPL）
+
+```python
+from jax_playground.offline_rl import run_demo
+
+result = run_demo(seed=0)
+print(result)
+# 例:
+# {
+#   'first_loss': ...,
+#   'last_loss': ...,
+#   'action_left_state': 1.0,
+#   'action_right_state': 1.0,
+# }
+```
+
+`first_loss` と `last_loss` を比べることで、学習が進んでいるかを確認できます。
+
+## オフラインRLサンプルの流れ
+
+1. `generate_toy_offline_dataset()` で固定データを作る
+2. `train_offline_q_learning()` でデータのみを使って学習する
+3. `greedy_action()` で学習後方策の行動を確認する
+
+## 品質チェック
 
 ```zsh
-# formatter
-$ make fmt
+# フォーマット
+make fmt
 
-# linter
-$ make lint
+# Lint + 型チェック
+make lint
+
+# テスト
+make test
 ```
 
-### Test と Coverage の取得
+## テスト内容
 
-```zsh
-# test
-$ make test
+`test/test_offline_rl.py` では、以下を検証しています。
 
-# coverage の取得
-$ make coverage
-
-# coverage の可視化
-$ make vis_coverage
-```
+- データセットの形状が期待どおりであること
+- 学習で損失が低下すること
+- 学習後方策がゴール方向の行動を選べること
